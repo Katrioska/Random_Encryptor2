@@ -82,14 +82,24 @@ class ConsoleUI:
 
 			elif op.startswith("saveKey"):
 				try:
-					self.cipher.saveKey(op.split(" ")[1])
+					if op.split(" ")[2] == "true":
+						save = True
+					else:
+						save = False
+
+					self.cipher.saveKey(op.split(" ")[1], save)
 					print(Fore.GREEN+" [*]"+Fore.WHITE+" Done!.")
 				except Exception as e:
 					print(Fore.RED+" [!]"+Fore.WHITE+" Error: {}".format(e))
 
 			elif op.startswith("loadKey"):
 				try:
-					self.cipher.loadKey(op.split(" ")[1])
+					if op.split(" ")[2] == "true":
+						save = True
+					else:
+						save = False
+
+					self.cipher.loadKey(op.split(" ")[1], save)
 					print(Fore.GREEN+" [*]"+Fore.WHITE+" Done!.")
 				except Exception as e:
 					print(Fore.RED+" [!]"+Fore.WHITE+" Error: {}".format(e))
@@ -98,9 +108,24 @@ class ConsoleUI:
 				self.cipher.generateKey()
 				print(Fore.GREEN+" [*]"+Fore.WHITE+" Done!.")
 
+			elif op=="getKeys":
+				print(Fore.GREEN+" [*]"+Fore.WHITE+" Saved keys:")
+				for key in self.cipher.getKeys():
+					print(Fore.YELLOW+" [=] "+Fore.WHITE+key)
+
+			elif op.startswith("changeKey"):
+				try:
+					self.cipher.changeKey(int(op.split(" ")[1]))
+				except Exception as e:
+					print(Fore.RED+" [!]"+Fore.WHITE+" Error: {}".format(e))
+
 			elif op == "exit":
 				print(Fore.GREEN+" [#]"+Fore.WHITE+" Goodbye!")
 				break
+
+			elif op == "cls":
+				system('cls')
+				self.title()
 
 			else:
 				print(Fore.RED+" [!]"+Fore.WHITE+" Command not recognized.")
@@ -113,20 +138,21 @@ class ConsoleUI:
 				+Fore.CYAN+"# # ### # # ### ### # #   "+Fore.GREEN+" #   # # ### #     # ###  ## ### #    "+Fore.YELLOW+" #   \n"
 				+Fore.CYAN+"# #                        "+Fore.GREEN+"###             ### #                 "+Fore.YELLOW+"### "+Fore.RED+"\n by: Katrioska\n"
 				)
-		print(Fore.GREEN+" [#]"+Fore.WHITE+" Welcome to Random Encryptor 2 Pre-Alpha 1.0.0")
+		print(Fore.GREEN+" [#]"+Fore.WHITE+" Welcome to Random Encryptor 2 Pre-Alpha 1.1.0")
 		print(Fore.GREEN+" [*]"+Fore.WHITE+" Note: This version can have bugs. Don't use for professional porposes.")
 		print(Fore.GREEN+" [#]"+Fore.WHITE+" Use 'help' to show commands.")
 
 	def help(self):
 		print(Fore.GREEN+" [#]"+Fore.CYAN+" Commands: \n")
-		print(Fore.GREEN+" [*]"+Fore.WHITE+"\thelp					   	: Show this. \n\n")
-		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tencrypt [text]			: Encrypt the entered text.\n\n")
-		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tdecrypt [text]			: Decrypt the entered encrypted text\n\n")
-		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tencryptFile [path] [save path]  : Encrypt the file at path and save it on save path.\n\n")
-		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tdecryptFile [path] [save path]  : Decrypt the encrypted file at path and save it on save path.\n\n")
-		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tsaveKey [path]			: Save the key in the entered path.\n\n")
-		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tloadKey [path]			: Load the key in the entered path.\n\n")
-		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tgenerateKey			: Generate a new key.\n\n")
+		print(Fore.GREEN+" [*]"+Fore.WHITE+"\thelp")
+		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tencrypt [text]")
+		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tdecrypt [text]")
+		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tencryptFile [path] [save path]")
+		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tdecryptFile [path] [save path]")
+		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tsaveKey [path] [save in ram(true/false)]")
+		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tloadKey [path] [save in ram(true/false)]")
+		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tgenerateKey")
+		print(Fore.GREEN+" [*]"+Fore.WHITE+"\tgetKeys")
 
 if __name__ == "__main__":
 	ui = ConsoleUI()

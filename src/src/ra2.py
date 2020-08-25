@@ -1,21 +1,40 @@
 from Cryptodome.Cipher import AES
 from Cryptodome.Random import get_random_bytes
 from base64 import b64encode, b64decode
-from os import remove, path
+from os import remove, path, walk
 from pickle import dumps, loads, dump, load
 
 class RandomEncryptor2:
 	def __init__(self):
 		self.__key = self.generateKey()
 		self.__bufferSize = 65536
+		self.__previuslyLoadedKeys = []
 
-	def saveKey(self, path):
-		with open(path+"\\key.dat", 'wb') as f:
+	def changeKey(self, keyId):
+		self.__key = self.__previuslyLoadedKeys[keyId]
+
+	def getKeys(self):
+		return self.__previuslyLoadedKeys
+
+	def saveKey(self, path, saveKeyList=False):
+		v_keys = []
+		for(dirpath, dirnames, filenames) in walk(path):
+			for file in filenames:
+				if file.startswith("key"):
+					v_keys.append(filenames)
+
+		cont = len(v_keys)
+
+		with open(path+"\\key{}.dat".format(cont), 'wb') as f:
 			f.write(self.__key)
+		if saveKeyList:
+			self.__previuslyLoadedKeys.append(path+"\\key{}.dat".format(cont))
 
-	def loadKey(self, path):
+	def loadKey(self, path, saveKeyList=False):
 		with open(path, 'rb') as f:
 			self.__key = f.read()
+		if saveKeyList:
+			self.__previuslyLoadedKeys.append(path)
 
 	def encrypt(self, data):
 		cipher = AES.new(self.__key, AES.MODE_CFB)
