@@ -1,7 +1,14 @@
-[#] Pre-Alpha 1.0.0 (25/08/2020)
-[*] First version!
-[*] Features:
-["] - Text encryption/decryption
-["] - File encryption/decryption
-["] - Save/load key
-["] - Console UI.
+Pre-Alpha 1.1.0 (25/08/2020)
+ Features:
+ - Function to add manualy key (getKey and setKey)
+ - Multiple key loads, you should put 'true' as final argument
+ - To change to other keys, first print them with 'showKeys', and then change with 'changeKey [key id]' (starting from 0!)
+
+
+Pre-Alpha 1.0.0 (25/08/2020)
+ First version!
+ Features:
+ - Text encryption/decryption
+ - File encryption/decryption
+ - Save/load key
+ - Console UI.
