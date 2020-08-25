@@ -10,11 +10,22 @@ class RandomEncryptor2:
 		self.__bufferSize = 65536
 		self.__previuslyLoadedKeys = []
 
+	def setKey(self, key):
+		self.__key = bytearray.fromhex(key)
+
+	def getKey(self, save=False):
+		if save:
+			f = open("key_text.txt", 'w')
+			f.write(self.__key.hex())
+			f.close()
+
+		return self.__key.hex()
+
 	def changeKey(self, keyId):
 		self.__key = self.__previuslyLoadedKeys[keyId]
 
-	def getKeys(self):
-		return self.__previuslyLoadedKeys
+	def showKeys(self):
+		return [self.__previuslyLoadedKeys[0].hex(), self.__previuslyLoadedKeys[1].hex()]
 
 	def saveKey(self, path, saveKeyList=False):
 		v_keys = []
@@ -28,13 +39,13 @@ class RandomEncryptor2:
 		with open(path+"\\key{}.dat".format(cont), 'wb') as f:
 			f.write(self.__key)
 		if saveKeyList:
-			self.__previuslyLoadedKeys.append(path+"\\key{}.dat".format(cont))
+			self.__previuslyLoadedKeys.append(self.__key)
 
 	def loadKey(self, path, saveKeyList=False):
 		with open(path, 'rb') as f:
 			self.__key = f.read()
 		if saveKeyList:
-			self.__previuslyLoadedKeys.append(path)
+			self.__previuslyLoadedKeys.append(self.__key)
 
 	def encrypt(self, data):
 		cipher = AES.new(self.__key, AES.MODE_CFB)
