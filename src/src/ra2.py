@@ -7,6 +7,7 @@ from pickle import dumps, loads, dump, load
 class RandomEncryptor2:
 	def __init__(self):
 		self.__key = self.generateKey()
+		self.__bufferSize = 65536
 
 	def saveKey(self, path):
 		with open(path+"\\key.dat", 'wb') as f:
@@ -34,27 +35,62 @@ class RandomEncryptor2:
 
 	def encryptFile(self, pathFile, savePath):
 		cipher = AES.new(self.__key, AES.MODE_CFB)
+		input_file = open(pathFile, 'rb')
+		output_file = open(savePath+"\\"+pathFile.split("\\")[-1]+".encrypted", 'wb')
+
+		output_file.write(cipher.iv)
+		bufferF = input_file.read(self.__bufferSize)
+
+		while len(bufferF) > 0:
+			cipher_bytes = cipher.encrypt(bufferF)
+			output_file.write(cipher_bytes)
+			bufferF	= input_file.read(self.__bufferSize)
+
+		input_file.close()
+		output_file.close()
+		remove(pathFile)
+		"""
 		with open(pathFile, "rb") as f:
 			cipher_data = cipher.encrypt(f.read())
 
 		file_name = pathFile.split('\\')[-1]
 		file_extension = pathFile.split(".")[-1]
-		data_to_dump = [file_name, cipher_data.hex()]
+		data_to_dump = [file_name, cipher_data.hex(), cipher.iv.hex()]
 		
 		with open(savePath+"\\"+file_name.replace("."+file_extension, ".bin"), "wb") as ff:
 			dump(data_to_dump, ff)
 
 		remove(pathFile)
-
+		"""
 	def decryptFile(self, pathFile, savePath):
-		cipher = AES.new(self.__key, AES.MODE_CFB)
+		input_file = open(pathFile, 'rb')
+		output_file = open(savePath+"\\"+pathFile.split("\\")[-1].replace(".encrypted", ""), 'wb')
+
+		ivRestored = input_file.read(16)
+
+		cipher = AES.new(self.__key, AES.MODE_CFB, iv=ivRestored)
+
+		bufferF = input_file.read(self.__bufferSize)
+		while len(bufferF) > 0:
+			decrypt_bytes = cipher.decrypt(bufferF)
+			output_file.write(decrypt_bytes)
+			bufferF = input_file.read(self.__bufferSize)
+
+		input_file.close()
+		output_file.close()
+		remove(pathFile)
+		"""
 		with open(pathFile, "rb") as f:
 			data_to_load = load(f)
+
+		cipher = AES.new(self.__key, AES.MODE_CFB, iv=bytearray.fromhex(data_to_load[2]))
 
 		with open(savePath+"\\"+data_to_load[0], "wb") as fd:
 			fd.write(cipher.decrypt(bytearray.fromhex(data_to_load[1])))
 
 		remove(pathFile)
+		"""
 
 	def generateKey(self):
-		return get_random_bytes(32)
+		self.__key = get_random_bytes(32)
+		return self.__key
