@@ -6,8 +6,8 @@ Random Encryptor 2 is a desktop program where you can encrypt text and files wit
 At the moment the project is developed in only Python but it is not ruled out that the project is added or completely changed to another programming language.
 
 ## Development Status:
-### Pre-Alpha 1.0.0 (24/08/2020)
-The project just started, during the first stages, the program can only be run on the console but the final idea is that it has a well-developed graphical interface
+### Pre-Alpha 1.1.0 (25/08/2020)
+Very main functions of Random Encryptor 2 are working, but still running in console.
 
 ## Developers
 * **[Katrioska](https://github.com/Katrioska)** >>> Main developer.
