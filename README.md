@@ -9,5 +9,7 @@ At the moment the project is developed in only Python but it is not ruled out th
 ### Pre-Alpha 1.1.0 (25/08/2020)
 Very main functions of Random Encryptor 2 are working, but still running in console.
 
+## IN THE NEAR FUTURE, I WILL WORK IN THIS PROJECT
+
 ## Developers
 * **[Katrioska](https://github.com/Katrioska)** >>> Main developer.
