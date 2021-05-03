@@ -1,0 +1,4 @@
+venv/*
+venv/Include/*
+venv/Lib/*
+venv/Scripts/*

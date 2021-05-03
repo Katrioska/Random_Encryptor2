@@ -1,4 +1,4 @@
-from src.ra2 import *
+from ra2 import *
 from colorama import init, Fore
 from os import system
 init(convert=True)
